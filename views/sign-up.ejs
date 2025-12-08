@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Members Only</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <header class="form-header">
+                <h1>Create Account</h1>
+                <p class="tagline">Join the Members Only community</p>
+            </header>
+
+            <% if (locals.errors && errors.length > 0) { %>
+                <ul class="error-container">
+                    <% errors.forEach(error => { %>
+                        <li class="error-message">
+                            <%= error.msg %>
+                        </li>
+                    <% }); %>
+                </ul>
+            <% } %>
+
+            <form action="/users/sign-up" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="firstName">First Name</label>
+                    <input type="text" name="firstName" id="firstName" required>
+                </div>
+                <div class="form-group">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" name="lastName" id="lastName" required>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="passwordConfirm">Confirm password</label>
+                    <input type="password" name="passwordConfirm" id="passwordConfirm" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+            </form>
+
+            <div class="form-footer">
+                <p>Already have an account? <a href="/users/log-in">Log in</a></p>
+                <p><a href="/">Back to home</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
