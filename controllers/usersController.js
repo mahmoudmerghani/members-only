@@ -34,6 +34,10 @@ function getUserSignUpForm(req, res) {
     res.render("sign-up");
 }
 
+function getUserLogInForm(req, res) {
+    res.render("log-in");
+}
+
 const addUser = [
     validateUser,
     async (req, res) => {
@@ -44,11 +48,12 @@ const addUser = [
         }
 
         await queries.addUser(matchedData(req));
-        res.redirect("/");
+        res.redirect("/?newUser=true");
     },
 ];
 
 export default {
     getUserSignUpForm,
+    getUserLogInForm,
     addUser,
 };

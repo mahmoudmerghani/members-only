@@ -41,6 +41,26 @@ header h1 {
     font-size: 1.05rem;
 }
 
+.success-notification {
+    background: #0d1117;
+    border: 1px solid #238636;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #3fb950;
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.success-notification svg {
+    flex-shrink: 0;
+}
+
 .hero {
     text-align: center;
     margin-bottom: 40px;

@@ -13,7 +13,8 @@ app.set("view engine", "ejs");
 app.set("views", path.join(import.meta.dirname, "views"));
 
 app.get("/", (req, res) => {
-    res.render("index");
+    const newUser = req.query.newUser === "true";
+    res.render("index", { newUser });
 })
 
 app.use("/users", usersRouter);

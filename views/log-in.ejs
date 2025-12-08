@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In - Members Only</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-wrapper">
+            <header class="form-header">
+                <h1>Welcome Back</h1>
+                <p class="tagline">Log in to your account</p>
+            </header>
+
+            <% if (locals.errorMessage) { %>
+                <div class="error-container">
+                    <div class="error-message">
+                        <%= errorMessage %>
+                    </div>
+                </div>
+            <% } %>
+
+            <form action="/users/log-in" method="POST" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full">Log In</button>
+            </form>
+
+            <div class="form-footer">
+                <p>Don't have an account? <a href="/users/sign-up">Sign up</a></p>
+                <p><a href="/">Back to home</a></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

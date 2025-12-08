@@ -8,4 +8,6 @@ usersRouter.use(express.urlencoded({ extended: false }));
 usersRouter.get("/sign-up", usersController.getUserSignUpForm);
 usersRouter.post("/sign-up", usersController.addUser);
 
+usersRouter.get("/log-in", usersController.getUserLogInForm);
+
 export default usersRouter;
