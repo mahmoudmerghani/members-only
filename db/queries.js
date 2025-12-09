@@ -97,10 +97,22 @@ async function getAllMessages() {
     return rows.map(normalizeMessage);
 }
 
+async function setUserMemberStatus(userId, memberStatus) {
+    await pool.query(
+        `
+        UPDATE users
+        SET is_member = $2
+        WHERE id = $1;
+    `,
+        [userId, memberStatus]
+    );
+}
+
 export default {
     addUser,
     getUserByUsername,
     getUserById,
     addMessage,
     getAllMessages,
+    setUserMemberStatus,
 };

@@ -39,6 +39,14 @@ const redirectIfAuthenticated = (req, res, next) => {
     }
 };
 
+const redirectIfUnauthenticated = (req, res, next) => {
+    if (req.isUnauthenticated()) {
+        res.redirect("/");
+    } else {
+        next();
+    }
+};
+
 const getUserSignUpForm = [
     redirectIfAuthenticated,
     (req, res) => {
@@ -80,13 +88,84 @@ const logInUser = [
     },
 ];
 
-function logOutUser(req, res, next) {
-    req.logOut((err) => {
-        if (err) return next(err);
+const logOutUser = [
+    redirectIfUnauthenticated,
+    (req, res, next) => {
+        req.logOut((err) => {
+            if (err) return next(err);
+
+            res.redirect("/");
+        });
+    },
+];
+
+function getHint(numberOfTries) {
+    let hint = "";
+
+    switch (numberOfTries) {
+        case 0: {
+            hint = "hint 1";
+            break;
+        }
+        case 1: {
+            hint = "hint 2";
+            break;
+        }
+        case 2: {
+            hint = "hint 3";
+            break;
+        }
+        case 3: {
+            hint = "hint 4";
+            break;
+        }
+        case 4: {
+            hint = "hint 5";
+            break;
+        }
+        case 5: {
+            hint = "hint 6";
+            break;
+        }
+        default: {
+            hint = "hint 6";
+        }
+    }
+    return hint;
+}
+
+const getJoinForm = [
+    redirectIfUnauthenticated,
+    (req, res) => {
+        if (!req.session.numberOfTries) {
+            req.session.numberOfTries = 0;
+        }
+
+        res.render("join-form", { hint: getHint(req.session.numberOfTries) });
+    },
+];
+
+const joinUser = [
+    redirectIfUnauthenticated,
+    body("password")
+        .equals(process.env.JOIN_SECRET)
+        .withMessage("Wrong password"),
+    async (req, res) => {
+        const errors = validationResult(req);
+
+        if (!errors.isEmpty()) {
+            req.session.numberOfTries++;
+            return res.render("join-form", {
+                errors: errors.array(),
+                hint: getHint(req.session.numberOfTries),
+            });
+        }
+
+        await queries.setUserMemberStatus(req.user.id, true);
 
         res.redirect("/");
-    });
-}
+    },
+];
 
 export default {
     getUserSignUpForm,
@@ -94,4 +173,6 @@ export default {
     addUser,
     logInUser,
     logOutUser,
+    getJoinForm,
+    joinUser,
 };

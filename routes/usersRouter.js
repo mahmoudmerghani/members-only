@@ -11,4 +11,7 @@ usersRouter.post("/log-in", usersController.logInUser);
 
 usersRouter.post("/log-out", usersController.logOutUser);
 
+usersRouter.get("/join", usersController.getJoinForm);
+usersRouter.post("/join", usersController.joinUser);
+
 export default usersRouter;

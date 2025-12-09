@@ -316,6 +316,23 @@ header h1 {
     margin-bottom: 0;
 }
 
+.hint-container {
+    background: #1c1e26;
+    border: 1px solid #58a6ff;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #79c0ff;
+    font-size: 0.9rem;
+}
+
+.hint-container svg {
+    flex-shrink: 0;
+}
+
 .auth-form {
     margin-bottom: 24px;
 }
