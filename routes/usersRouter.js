@@ -11,4 +11,6 @@ usersRouter.post("/sign-up", usersController.addUser);
 usersRouter.get("/log-in", usersController.getUserLogInForm);
 usersRouter.post("/log-in", usersController.logInUser);
 
+usersRouter.post("/log-out", usersController.logOutUser);
+
 export default usersRouter;

@@ -23,9 +23,18 @@ app.use(passport.session());
 app.set("view engine", "ejs");
 app.set("views", path.join(import.meta.dirname, "views"));
 
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
+
 app.get("/", (req, res) => {
-    const newUser = req.query.newUser === "true";
-    res.render("index", { newUser });
+    if (req.isAuthenticated()) {
+        res.render("home");
+    } else {
+        const newUser = req.query.newUser === "true";
+        res.render("index", { newUser });
+    }
 })
 
 app.use("/users", usersRouter);

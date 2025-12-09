@@ -61,6 +61,26 @@ header h1 {
     flex-shrink: 0;
 }
 
+.user-info {
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 24px;
+}
+
+.user-details h2 {
+    color: #e6edf3;
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.user-details .username {
+    color: #8b949e;
+    font-size: 1rem;
+}
+
 .hero {
     text-align: center;
     margin-bottom: 40px;
@@ -147,6 +167,44 @@ header h1 {
     background: #30363d;
     border-color: #8b949e;
     box-shadow: 0 0 0 3px rgba(139, 148, 158, 0.2);
+}
+
+/* Home Navigation */
+.home-nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 0;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #30363d;
+    flex-wrap: wrap;
+}
+
+.nav-link {
+    color: #58a6ff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #79c0ff;
+    text-decoration: underline;
+}
+
+.logout-form {
+    margin-left: auto;
+}
+
+.messages {
+    margin-bottom: 40px;
+}
+
+.messages h2 {
+    color: #e6edf3;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-weight: 600;
 }
 
 /* Form Styles */

@@ -1,6 +1,20 @@
 import pool from "./pool.js";
 import bcrypt from "bcryptjs";
 
+function normalizeUser(dbUser) {
+    if (!dbUser) return null;
+
+    return {
+        id: dbUser.id,
+        firstName: dbUser.first_name,
+        lastName: dbUser.last_name,
+        username: dbUser.username,
+        password: dbUser.password,
+        isMember: dbUser.is_member,
+        createdAt: dbUser.created_at,
+    };
+}
+
 async function addUser({ firstName, lastName, username, password }) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -20,7 +34,7 @@ async function getUserByUsername(username) {
         SELECT * FROM users WHERE username = $1;
     `, [username]);
 
-    return rows[0] || null;
+    return normalizeUser(rows[0]);
 }
 
 async function getUserById(id) {
@@ -28,7 +42,7 @@ async function getUserById(id) {
         SELECT * FROM users WHERE id = $1;
     `, [id]);
 
-    return rows[0] || null;
+    return normalizeUser(rows[0]);
 }
 
 export default {

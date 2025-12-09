@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Members Only</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Members Only</h1>
+            <p class="tagline">Welcome to the community</p>
+        </header>
+
+        <% if (locals.currentUser) { %>
+            <div class="user-info">
+                <div class="user-details">
+                    <h2>Welcome, <%= currentUser.firstName %> <%= currentUser.lastName %>!</h2>
+                    <p class="username">@<%= currentUser.username %></p>
+                </div>
+            </div>
+        <% } %>
+
+        <nav class="home-nav">
+            <a href="/create-message" class="btn btn-primary">Create a New Message</a>
+            <a href="/join" class="nav-link">Join the Club</a>
+            <form action="/users/log-out" method="POST" class="logout-form">
+                <button type="submit" class="btn btn-secondary">Log Out</button>
+            </form>
+        </nav>
+
+        <main>
+            <section class="messages">
+                <h2>Recent Messages</h2>
+                <!-- Messages will go here -->
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Members Only Club. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

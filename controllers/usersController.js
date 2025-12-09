@@ -64,9 +64,18 @@ const logInUser = [
     },
 ];
 
+function logOutUser(req, res, next) {
+    req.logOut((err) => {
+        if (err) return next(err);
+
+        res.redirect("/");
+    });
+}
+
 export default {
     getUserSignUpForm,
     getUserLogInForm,
     addUser,
     logInUser,
+    logOutUser,
 };
