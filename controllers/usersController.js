@@ -47,6 +47,14 @@ const redirectIfUnauthenticated = (req, res, next) => {
     }
 };
 
+const redirectIfMember = (req, res, next) => {
+    if (req.user.isMember) {
+        res.redirect("/");
+    } else {
+        next();
+    }
+}
+
 const getUserSignUpForm = [
     redirectIfAuthenticated,
     (req, res) => {
@@ -136,6 +144,7 @@ function getHint(numberOfTries) {
 
 const getJoinForm = [
     redirectIfUnauthenticated,
+    redirectIfMember,
     (req, res) => {
         if (!req.session.numberOfTries) {
             req.session.numberOfTries = 0;
@@ -147,6 +156,7 @@ const getJoinForm = [
 
 const joinUser = [
     redirectIfUnauthenticated,
+    redirectIfMember,
     body("password")
         .equals(process.env.JOIN_SECRET)
         .withMessage("Wrong password"),

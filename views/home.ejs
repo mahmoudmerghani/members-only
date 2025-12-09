@@ -18,6 +18,11 @@
                 <div class="user-details">
                     <h2>Welcome, <%= currentUser.firstName %> <%= currentUser.lastName %>!</h2>
                     <p class="username">@<%= currentUser.username %></p>
+                    <% if (currentUser.isMember) { %>
+                        <span class="member-badge">✓ Club Member</span>
+                    <% } else { %>
+                        <span class="non-member-badge">Not a member yet</span>
+                    <% } %>
                 </div>
             </div>
         <% } %>
@@ -33,7 +38,9 @@
 
         <nav class="home-nav">
             <a href="/create-message" class="btn btn-primary">Create a New Message</a>
-            <a href="/users/join" class="nav-link">Join the Club</a>
+            <% if (currentUser && !currentUser.isMember) { %>
+                <a href="/users/join" class="btn btn-primary">Join the Club</a>
+            <% } %>
             <form action="/users/log-out" method="POST" class="logout-form">
                 <button type="submit" class="btn btn-secondary">Log Out</button>
             </form>
