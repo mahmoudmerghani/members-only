@@ -31,15 +31,30 @@ const validateUser = [
     }),
 ];
 
-function getUserSignUpForm(req, res) {
-    res.render("sign-up");
-}
+const redirectIfAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.redirect("/");
+    } else {
+        next();
+    }
+};
 
-function getUserLogInForm(req, res) {
-    res.render("log-in");
-}
+const getUserSignUpForm = [
+    redirectIfAuthenticated,
+    (req, res) => {
+        res.render("sign-up");
+    },
+];
+
+const getUserLogInForm = [
+    redirectIfAuthenticated,
+    (req, res) => {
+        res.render("log-in");
+    },
+];
 
 const addUser = [
+    redirectIfAuthenticated,
     validateUser,
     async (req, res) => {
         const errors = validationResult(req);
@@ -54,6 +69,7 @@ const addUser = [
 ];
 
 const logInUser = [
+    redirectIfAuthenticated,
     authenticateUser,
     (req, res) => {
         if (req.isAuthenticated()) {
