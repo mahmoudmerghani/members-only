@@ -291,6 +291,30 @@ header h1 {
     color: #6e7681;
 }
 
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    color: #c9d1d9;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.3);
+}
+
+.form-group textarea::placeholder {
+    color: #6e7681;
+}
+
 .btn-full {
     width: 100%;
     padding: 12px;

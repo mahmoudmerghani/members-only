@@ -3,15 +3,16 @@ import session from "express-session";
 import passport from "passport";
 import path from "node:path";
 import usersRouter from "./routes/usersRouter.js";
+import messagesRouter from "./routes/messagesRouter.js";
 import { config } from "dotenv";
 config();
-
 
 
 
 const app = express();
 
 app.use(express.static(path.join(import.meta.dirname, "public")));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -30,7 +31,8 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => {
     if (req.isAuthenticated()) {
-        res.render("home");
+        const newMessage = req.query.newMessage === "true";
+        res.render("home", { newMessage });
     } else {
         const newUser = req.query.newUser === "true";
         res.render("index", { newUser });
@@ -38,6 +40,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/users", usersRouter);
+app.use("/", messagesRouter);
 
 app.listen(8080);
 

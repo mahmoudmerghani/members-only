@@ -30,23 +30,42 @@ async function addUser({ firstName, lastName, username, password }) {
 }
 
 async function getUserByUsername(username) {
-    const { rows } = await pool.query(`
+    const { rows } = await pool.query(
+        `
         SELECT * FROM users WHERE username = $1;
-    `, [username]);
+    `,
+        [username]
+    );
 
     return normalizeUser(rows[0]);
 }
 
 async function getUserById(id) {
-    const { rows } = await pool.query(`
+    const { rows } = await pool.query(
+        `
         SELECT * FROM users WHERE id = $1;
-    `, [id]);
+    `,
+        [id]
+    );
 
     return normalizeUser(rows[0]);
+}
+
+async function addMessage({ title, text, userId }) {
+    const { rows } = await pool.query(
+        `
+        INSERT INTO messages (title, text, user_id)
+        VALUES ($1, $2, $3) RETURNING id;
+    `,
+        [title, text, userId]
+    );
+
+    return rows[0].id;
 }
 
 export default {
     addUser,
     getUserByUsername,
-    getUserById
+    getUserById,
+    addMessage,
 };
