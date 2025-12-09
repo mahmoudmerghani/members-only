@@ -1,4 +1,5 @@
 import { body, validationResult, matchedData } from "express-validator";
+import authenticateUser from "./authenticateUser.js";
 import queries from "../db/queries.js";
 
 const validateUser = [
@@ -52,8 +53,20 @@ const addUser = [
     },
 ];
 
+const logInUser = [
+    authenticateUser,
+    (req, res) => {
+        if (req.isAuthenticated()) {
+            res.redirect("/");
+        } else {
+            res.render("log-in", { errorMessage: req.authInfo.errorMessage });
+        }
+    },
+];
+
 export default {
     getUserSignUpForm,
     getUserLogInForm,
     addUser,
+    logInUser,
 };
