@@ -27,7 +27,14 @@ const addMessage = [
     },
 ];
 
+async function getAllMessages(req, res) {
+    const messages = await queries.getAllMessages();
+    const newMessage = req.query.newMessage === "true";
+    res.render("home", { newMessage, messages });
+}
+
 export default {
     getAddMessageForm,
+    getAllMessages,
     addMessage,
 };

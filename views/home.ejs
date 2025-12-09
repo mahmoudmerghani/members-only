@@ -42,7 +42,33 @@
         <main>
             <section class="messages">
                 <h2>Recent Messages</h2>
-                <!-- Messages will go here -->
+                
+                <% if (locals.messages && messages.length > 0) { %>
+                    <div class="messages-list">
+                        <% messages.forEach(message => { %>
+                            <article class="message-card">
+                                <div class="message-header">
+                                    <h3 class="message-title"><%= message.title %></h3>
+                                    <time class="message-date"><%= message.createdAt.toLocaleString() %></time>
+                                </div>
+                                <% if (message.text) { %>
+                                    <p class="message-text"><%= message.text %></p>
+                                <% } %>
+                                <div class="message-footer">
+                                    <% if (currentUser && currentUser.isMember) { %>
+                                        <span class="message-author">
+                                            By <%= message.user.firstName %> <%= message.user.lastName %> (@<%= message.user.username %>)
+                                        </span>
+                                    <% } else { %>
+                                        <span class="message-author">Anonymous</span>
+                                    <% } %>
+                                </div>
+                            </article>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <p class="no-messages">No messages yet. Be the first to post!</p>
+                <% } %>
             </section>
         </main>
 

@@ -7,9 +7,12 @@ messagesRouter.use((req, res, next) => {
     if (req.isAuthenticated()) {
         next();
     } else {
-        res.redirect("/users/log-in");
+        const newUser = req.query.newUser === "true";
+        res.render("index", { newUser });
     }
 });
+
+messagesRouter.get("/", messagesController.getAllMessages);
 
 messagesRouter.get("/create-message", messagesController.getAddMessageForm);
 messagesRouter.post("/create-message", messagesController.addMessage);
