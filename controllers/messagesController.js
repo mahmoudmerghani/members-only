@@ -35,11 +35,14 @@ const addMessage = [
 async function getAllMessages(req, res) {
     const messages = await queries.getAllMessages();
 
-    const newMessage = req.query.newMessage === "true";
-    const newUser = req.query.newUser === "true";
-    const messageDeleted = req.query.messageDeleted === "true";
-
-    res.render("index", { messages, newUser, newMessage, messageDeleted });
+    if (req.isAuthenticated()) {
+        const newMessage = req.query.newMessage === "true";
+        const messageDeleted = req.query.messageDeleted === "true";
+        res.render("home", { messages, newMessage, messageDeleted });
+    } else {
+        const newUser = req.query.newUser === "true";
+        res.render("index", { messages, newUser });
+    }
 }
 
 const deleteMessage = [

@@ -2,6 +2,10 @@ import { body, validationResult, matchedData } from "express-validator";
 import userAuth from "./userAuth.js";
 import queries from "../db/queries.js";
 
+const JOIN_PASSWORD_HINTS = [
+    ""
+];
+
 const validateUser = [
     body("firstName")
         .trim()
@@ -83,41 +87,6 @@ const logOutUser = [
     },
 ];
 
-function getHint(numberOfTries) {
-    let hint = "";
-
-    switch (numberOfTries) {
-        case 0: {
-            hint = "hint 1";
-            break;
-        }
-        case 1: {
-            hint = "hint 2";
-            break;
-        }
-        case 2: {
-            hint = "hint 3";
-            break;
-        }
-        case 3: {
-            hint = "hint 4";
-            break;
-        }
-        case 4: {
-            hint = "hint 5";
-            break;
-        }
-        case 5: {
-            hint = "hint 6";
-            break;
-        }
-        default: {
-            hint = "hint 6";
-        }
-    }
-    return hint;
-}
-
 const getJoinForm = [
     userAuth.redirectIfUnauthenticated,
     userAuth.redirectIfMember,
@@ -126,7 +95,15 @@ const getJoinForm = [
             req.session.numberOfTries = 0;
         }
 
-        res.render("join-form", { hint: getHint(req.session.numberOfTries) });
+        // if numberOfTries exceeds the hints array length then get the last hint in the array
+        const hint =
+            JOIN_PASSWORD_HINTS[
+                Math.min(
+                    req.session.numberOfTries,
+                    JOIN_PASSWORD_HINTS.length - 1
+                )
+            ];
+        res.render("join-form", { hint });
     },
 ];
 

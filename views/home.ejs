@@ -13,19 +13,17 @@
             <p class="tagline">Welcome to the community</p>
         </header>
 
-        <% if (locals.currentUser) { %>
-            <div class="user-info">
-                <div class="user-details">
-                    <h2>Welcome, <%= currentUser.firstName %> <%= currentUser.lastName %>!</h2>
-                    <p class="username">@<%= currentUser.username %></p>
-                    <% if (currentUser.isMember) { %>
-                        <span class="member-badge">✓ Club Member</span>
-                    <% } else { %>
-                        <span class="non-member-badge">Not a member yet</span>
-                    <% } %>
-                </div>
+        <div class="user-info">
+            <div class="user-details">
+                <h2>Welcome, <%= currentUser.firstName %> <%= currentUser.lastName %>!</h2>
+                <p class="username">@<%= currentUser.username %></p>
+                <% if (currentUser.isMember) { %>
+                    <span class="member-badge">✓ Club Member</span>
+                <% } else { %>
+                    <span class="non-member-badge">Not a member yet</span>
+                <% } %>
             </div>
-        <% } %>
+        </div>
 
         <% if (locals.newMessage) { %>
             <div class="success-notification">
@@ -36,9 +34,18 @@
             </div>
         <% } %>
 
+        <% if (locals.messageDeleted) { %>
+            <div class="success-notification">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
+                </svg>
+                <span>Message deleted successfully!</span>
+            </div>
+        <% } %>
+
         <nav class="home-nav">
             <a href="/create-message" class="btn btn-primary">Create a New Message</a>
-            <% if (currentUser && !currentUser.isMember) { %>
+            <% if (!currentUser.isMember) { %>
                 <a href="/users/join" class="btn btn-primary">Join the Club</a>
             <% } %>
             <form action="/users/log-out" method="POST" class="logout-form">
@@ -62,10 +69,13 @@
                                     <p class="message-text"><%= message.text %></p>
                                 <% } %>
                                 <div class="message-footer">
-                                    <% if (currentUser && currentUser.isMember) { %>
+                                    <% if (currentUser.isMember) { %>
                                         <span class="message-author">
                                             By <%= message.user.firstName %> <%= message.user.lastName %> (@<%= message.user.username %>)
                                         </span>
+                                        <form action="/<%= message.id %>/delete" method="POST" class="delete-form">
+                                            <button type="submit" class="btn-delete">Delete</button>
+                                        </form>
                                     <% } else { %>
                                         <span class="message-author">Anonymous</span>
                                     <% } %>
