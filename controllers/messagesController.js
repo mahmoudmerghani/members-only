@@ -38,7 +38,13 @@ async function getAllMessages(req, res) {
     if (req.isAuthenticated()) {
         const newMessage = req.query.newMessage === "true";
         const messageDeleted = req.query.messageDeleted === "true";
-        res.render("home", { messages, newMessage, messageDeleted });
+        const userJoined = req.query.userJoined === "true";
+        res.render("home", {
+            messages,
+            newMessage,
+            messageDeleted,
+            userJoined,
+        });
     } else {
         const newUser = req.query.newUser === "true";
         res.render("index", { messages, newUser });

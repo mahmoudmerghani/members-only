@@ -141,7 +141,7 @@ const joinUser = [
 
         await queries.setUserMemberStatus(req.user.id, true);
 
-        res.redirect("/");
+        res.redirect("/?userJoined=true");
     },
 ];
 
