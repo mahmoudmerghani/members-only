@@ -69,7 +69,7 @@
                                     <p class="message-text"><%= message.text %></p>
                                 <% } %>
                                 <div class="message-footer">
-                                    <% if (currentUser.isMember) { %>
+                                    <% if (currentUser.isMember || currentUser.id === message.user.id) { %>
                                         <span class="message-author">
                                             By <%= message.user.firstName %> <%= message.user.lastName %> (@<%= message.user.username %>)
                                         </span>

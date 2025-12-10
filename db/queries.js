@@ -118,6 +118,17 @@ async function deleteMessage(messageId) {
     );
 }
 
+async function getMessageById(messageId) {
+    const { rows } = await pool.query(
+        `
+        SELECT * FROM messages WHERE id = $1;
+    `,
+        [messageId]
+    );
+
+    return normalizeMessage(rows[0]);
+}
+
 export default {
     addUser,
     getUserByUsername,
@@ -126,4 +137,5 @@ export default {
     getAllMessages,
     setUserMemberStatus,
     deleteMessage,
+    getMessageById,
 };
