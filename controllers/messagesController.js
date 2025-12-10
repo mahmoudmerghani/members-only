@@ -50,9 +50,9 @@ const deleteMessage = [
     async (req, res) => {
         const { messageId } = req.params;
         const message = await queries.getMessageById(messageId);
-        
+
         // allow members to delete any message
-        // allow users to delete their own messages even if they are not members
+        // allow non-members to delete only their own messages
         if (req.user.isMember || req.user.id === message.user.id) {
             await queries.deleteMessage(req.params.messageId);
             res.redirect("/?messageDeleted=true");

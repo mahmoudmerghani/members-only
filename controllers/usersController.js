@@ -3,7 +3,12 @@ import userAuth from "./userAuth.js";
 import queries from "../db/queries.js";
 
 const JOIN_PASSWORD_HINTS = [
-    ""
+    "You can find a part of the code in the console",
+    "Another part is in a hidden HTML element",
+    "Now open the network tab in devtools and enter any value to refresh the page",
+    "Look for a custom header in the response headers",
+    "That is it!",
+    "Again, look at console -> HTML -> network tab all is in devtools"
 ];
 
 const validateUser = [
@@ -118,9 +123,19 @@ const joinUser = [
 
         if (!errors.isEmpty()) {
             req.session.numberOfTries++;
+            const hint =
+            JOIN_PASSWORD_HINTS[
+                Math.min(
+                    req.session.numberOfTries,
+                    JOIN_PASSWORD_HINTS.length - 1
+                )
+            ];
+
+            res.set("X-Hint", "Repeat the last two parts 3 times");
+
             return res.render("join-form", {
                 errors: errors.array(),
-                hint: getHint(req.session.numberOfTries),
+                hint,
             });
         }
 
