@@ -11,6 +11,7 @@ body {
     display: flex;
     flex-direction: column;
     color: #c9d1d9;
+    align-items: center;
 }
 
 .container {
@@ -19,7 +20,13 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    max-width: 1200px;
     padding: 40px;
+    margin: 0 auto;
+}
+
+.container-narrow {
+    max-width: 600px;
 }
 
 header {
@@ -317,7 +324,7 @@ header h1 {
 
 /* Form Styles */
 .form-wrapper {
-    max-width: 480px;
+    max-width: 400px;
     margin: 0 auto;
     width: 100%;
 }
