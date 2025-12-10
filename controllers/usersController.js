@@ -1,5 +1,5 @@
 import { body, validationResult, matchedData } from "express-validator";
-import authenticateUser from "./authenticateUser.js";
+import userAuth from "./userAuth.js";
 import queries from "../db/queries.js";
 
 const validateUser = [
@@ -31,46 +31,22 @@ const validateUser = [
     }),
 ];
 
-const redirectIfAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        res.redirect("/");
-    } else {
-        next();
-    }
-};
-
-const redirectIfUnauthenticated = (req, res, next) => {
-    if (req.isUnauthenticated()) {
-        res.redirect("/");
-    } else {
-        next();
-    }
-};
-
-const redirectIfMember = (req, res, next) => {
-    if (req.user.isMember) {
-        res.redirect("/");
-    } else {
-        next();
-    }
-}
-
 const getUserSignUpForm = [
-    redirectIfAuthenticated,
+    userAuth.redirectIfAuthenticated,
     (req, res) => {
         res.render("sign-up");
     },
 ];
 
 const getUserLogInForm = [
-    redirectIfAuthenticated,
+    userAuth.redirectIfAuthenticated,
     (req, res) => {
         res.render("log-in");
     },
 ];
 
 const addUser = [
-    redirectIfAuthenticated,
+    userAuth.redirectIfAuthenticated,
     validateUser,
     async (req, res) => {
         const errors = validationResult(req);
@@ -85,8 +61,8 @@ const addUser = [
 ];
 
 const logInUser = [
-    redirectIfAuthenticated,
-    authenticateUser,
+    userAuth.redirectIfAuthenticated,
+    userAuth.authenticateUser,
     (req, res) => {
         if (req.isAuthenticated()) {
             res.redirect("/");
@@ -97,7 +73,7 @@ const logInUser = [
 ];
 
 const logOutUser = [
-    redirectIfUnauthenticated,
+    userAuth.redirectIfUnauthenticated,
     (req, res, next) => {
         req.logOut((err) => {
             if (err) return next(err);
@@ -143,8 +119,8 @@ function getHint(numberOfTries) {
 }
 
 const getJoinForm = [
-    redirectIfUnauthenticated,
-    redirectIfMember,
+    userAuth.redirectIfUnauthenticated,
+    userAuth.redirectIfMember,
     (req, res) => {
         if (!req.session.numberOfTries) {
             req.session.numberOfTries = 0;
@@ -155,8 +131,8 @@ const getJoinForm = [
 ];
 
 const joinUser = [
-    redirectIfUnauthenticated,
-    redirectIfMember,
+    userAuth.redirectIfUnauthenticated,
+    userAuth.redirectIfMember,
     body("password")
         .equals(process.env.JOIN_SECRET)
         .withMessage("Wrong password"),

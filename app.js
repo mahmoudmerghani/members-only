@@ -5,7 +5,6 @@ import path from "node:path";
 import usersRouter from "./routes/usersRouter.js";
 import messagesRouter from "./routes/messagesRouter.js";
 import { config } from "dotenv";
-import queries from "./db/queries.js";
 config();
 
 

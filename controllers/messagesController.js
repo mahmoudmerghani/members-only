@@ -1,4 +1,5 @@
 import { body, validationResult, matchedData } from "express-validator";
+import userAuth from "./userAuth.js";
 import queries from "../db/queries.js";
 
 const validateMessage = [
@@ -6,23 +7,15 @@ const validateMessage = [
     body("text").optional({ values: "falsy" }).trim(),
 ];
 
-const authenticate = (req, res, next) => {
-    if (req.isAuthenticated()) {
-        next();
-    } else {
-        res.redirect("/");
-    }
-};
-
 const getAddMessageForm = [
-    authenticate,
+    userAuth.redirectIfUnauthenticated,
     (req, res) => {
         res.render("create-message");
     },
 ];
 
 const addMessage = [
-    authenticate,
+    userAuth.redirectIfUnauthenticated,
     validateMessage,
     async (req, res) => {
         const errors = validationResult(req);
@@ -40,14 +33,10 @@ const addMessage = [
 ];
 
 async function getAllMessages(req, res) {
-    if (req.isAuthenticated()) {
-        const messages = await queries.getAllMessages();
-        const newMessage = req.query.newMessage === "true";
-        res.render("home", { newMessage, messages });
-    } else {
-        const newUser = req.query.newUser === "true";
-        res.render("index", { newUser });
-    }
+    const messages = await queries.getAllMessages();
+    const newMessage = req.query.newMessage === "true";
+    const newUser = req.query.newUser === "true";
+    res.render("index", { newUser, newMessage, messages });
 }
 
 export default {

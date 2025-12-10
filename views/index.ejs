@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Members Only - Exclusive Club</title>
+    <title>Members Only</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Members Only</h1>
-            <p class="tagline">A private community for authenticated members</p>
+            <p class="tagline"><%= currentUser ? 'Welcome to the community' : 'A private community for authenticated members' %></p>
         </header>
 
         <% if (locals.newUser) { %>
@@ -22,7 +22,40 @@
             </div>
         <% } %>
 
-        <main>
+        <% if (locals.currentUser) { %>
+            <div class="user-info">
+                <div class="user-details">
+                    <h2>Welcome, <%= currentUser.firstName %> <%= currentUser.lastName %>!</h2>
+                    <p class="username">@<%= currentUser.username %></p>
+                    <% if (currentUser.isMember) { %>
+                        <span class="member-badge">✓ Club Member</span>
+                    <% } else { %>
+                        <span class="non-member-badge">Not a member yet</span>
+                    <% } %>
+                </div>
+            </div>
+        <% } %>
+
+        <% if (locals.newMessage) { %>
+            <div class="success-notification">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                    <path d="M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 10.94l6.72-6.72a.75.75 0 011.06 0z"></path>
+                </svg>
+                <span>Message posted successfully!</span>
+            </div>
+        <% } %>
+
+        <% if (currentUser) { %>
+            <nav class="home-nav">
+                <a href="/create-message" class="btn btn-primary">Create a New Message</a>
+                <% if (!currentUser.isMember) { %>
+                    <a href="/users/join" class="btn btn-primary">Join the Club</a>
+                <% } %>
+                <form action="/users/log-out" method="POST" class="logout-form">
+                    <button type="submit" class="btn btn-secondary">Log Out</button>
+                </form>
+            </nav>
+        <% } else { %>
             <section class="hero">
                 <h2>Welcome</h2>
                 <p>Join our private community to share messages and connect with fellow members. Authentication required for full access to member features and content.</p>
@@ -40,6 +73,39 @@
                     <p>Sign in to access exclusive content</p>
                     <a href="/users/log-in" class="btn btn-secondary">Log In</a>
                 </div>
+            </section>
+        <% } %>
+
+        <main>
+            <section class="messages">
+                <h2>Recent Messages</h2>
+                
+                <% if (locals.messages && messages.length > 0) { %>
+                    <div class="messages-list">
+                        <% messages.forEach(message => { %>
+                            <article class="message-card">
+                                <div class="message-header">
+                                    <h3 class="message-title"><%= message.title %></h3>
+                                    <time class="message-date"><%= message.createdAt.toLocaleString() %></time>
+                                </div>
+                                <% if (message.text) { %>
+                                    <p class="message-text"><%= message.text %></p>
+                                <% } %>
+                                <div class="message-footer">
+                                    <% if (currentUser && currentUser.isMember) { %>
+                                        <span class="message-author">
+                                            By <%= message.user.firstName %> <%= message.user.lastName %> (@<%= message.user.username %>)
+                                        </span>
+                                    <% } else { %>
+                                        <span class="message-author">Anonymous</span>
+                                    <% } %>
+                                </div>
+                            </article>
+                        <% }); %>
+                    </div>
+                <% } else { %>
+                    <p class="no-messages">No messages yet. Be the first to post!</p>
+                <% } %>
             </section>
         </main>
 

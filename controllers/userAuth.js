@@ -44,11 +44,40 @@ const authenticateUser = (req, res, next) => {
         if (!user) return next();
 
         req.logIn(user, (err) => {
-            if (err) return next(err)
-            
+            if (err) return next(err);
+
             next();
         });
     })(req, res, next);
+};
+
+const redirectIfAuthenticated = (req, res, next) => {
+    if (req.isAuthenticated()) {
+        res.redirect("/");
+    } else {
+        next();
+    }
+};
+
+const redirectIfUnauthenticated = (req, res, next) => {
+    if (req.isUnauthenticated()) {
+        res.redirect("/");
+    } else {
+        next();
+    }
+};
+
+const redirectIfMember = (req, res, next) => {
+    if (req.user.isMember) {
+        res.redirect("/");
+    } else {
+        next();
+    }
 }
 
-export default authenticateUser;
+export default {
+    authenticateUser,
+    redirectIfAuthenticated,
+    redirectIfUnauthenticated,
+    redirectIfMember,
+};
