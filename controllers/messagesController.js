@@ -34,13 +34,26 @@ const addMessage = [
 
 async function getAllMessages(req, res) {
     const messages = await queries.getAllMessages();
+
     const newMessage = req.query.newMessage === "true";
     const newUser = req.query.newUser === "true";
-    res.render("index", { newUser, newMessage, messages });
+    const messageDeleted = req.query.messageDeleted === "true";
+
+    res.render("index", { messages, newUser, newMessage, messageDeleted });
 }
+
+const deleteMessage = [
+    userAuth.redirectIfUnauthenticated,
+    userAuth.redirectIfNotMember,
+    async (req, res) => {
+        await queries.deleteMessage(req.params.messageId);
+        res.redirect("/?messageDeleted=true");
+    },
+];
 
 export default {
     getAddMessageForm,
     getAllMessages,
     addMessage,
+    deleteMessage,
 };

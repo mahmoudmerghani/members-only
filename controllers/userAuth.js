@@ -75,9 +75,18 @@ const redirectIfMember = (req, res, next) => {
     }
 }
 
+const redirectIfNotMember = (req, res, next) => {
+    if (!req.user.isMember) {
+        res.redirect("/");
+    } else {
+        next();
+    }
+}
+
 export default {
     authenticateUser,
     redirectIfAuthenticated,
     redirectIfUnauthenticated,
     redirectIfMember,
+    redirectIfNotMember
 };

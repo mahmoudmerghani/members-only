@@ -108,6 +108,16 @@ async function setUserMemberStatus(userId, memberStatus) {
     );
 }
 
+async function deleteMessage(messageId) {
+    await pool.query(
+        `
+        DELETE FROM messages
+        WHERE id = $1;
+        `,
+        [messageId]
+    );
+}
+
 export default {
     addUser,
     getUserByUsername,
@@ -115,4 +125,5 @@ export default {
     addMessage,
     getAllMessages,
     setUserMemberStatus,
+    deleteMessage,
 };

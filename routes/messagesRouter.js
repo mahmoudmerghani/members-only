@@ -8,4 +8,6 @@ messagesRouter.get("/", messagesController.getAllMessages);
 messagesRouter.get("/create-message", messagesController.getAddMessageForm);
 messagesRouter.post("/create-message", messagesController.addMessage);
 
+messagesRouter.post("/:messageId/delete", messagesController.deleteMessage);
+
 export default messagesRouter;

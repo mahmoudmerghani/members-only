@@ -277,11 +277,35 @@ header h1 {
 .message-footer {
     padding-top: 12px;
     border-top: 1px solid #30363d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .message-author {
     color: #8b949e;
     font-size: 0.875rem;
+}
+
+.delete-form {
+    margin: 0;
+}
+
+.btn-delete {
+    background: transparent;
+    color: #f85149;
+    border: 1px solid #f85149;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-delete:hover {
+    background: #f85149;
+    color: #ffffff;
 }
 
 .no-messages {
