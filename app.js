@@ -9,8 +9,6 @@ import messagesRouter from "./routes/messagesRouter.js";
 import { config } from "dotenv";
 config();
 
-
-
 const app = express();
 
 app.set("view engine", "ejs");
@@ -21,15 +19,17 @@ app.use(express.urlencoded({ extended: true }));
 
 const SessionStore = connectPgSimple(session);
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: new SessionStore({
-        pool,
-        createTableIfMissing: true,
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: new SessionStore({
+            pool,
+            createTableIfMissing: true,
+        }),
     })
-}));
+);
 app.use(passport.session());
 
 app.use((req, res, next) => {
@@ -40,5 +40,9 @@ app.use((req, res, next) => {
 app.use("/users", usersRouter);
 app.use("/", messagesRouter);
 
-app.listen(8080);
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).send("Something went wrong");
+});
 
+app.listen(8080);
